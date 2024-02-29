@@ -1,0 +1,76 @@
+// Declare variables at the top
+let theButtons = document.querySelectorAll("#buttonHolder img"),
+    puzzleBoard = document.querySelector(".puzzle-board"),
+    puzzlePieces = document.querySelectorAll(".puzzle-pieces img"),
+    dropZones = document.querySelectorAll('.drop-zone'),
+    draggedPiece;
+
+// Function to change background image and puzzle pieces
+function changeBGImage() {
+    // Bug fix #2: reset the puzzle pieces when changing the background image
+    resetPuzzlePieces();
+
+    // Set the background image based on the selected puzzle
+    puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
+
+    // Load the corresponding puzzle pieces for the selected image
+    let puzzlePiecesSrc = [
+        "topLeft", "topRight", "bottomLeft", "bottomRight"
+    ];
+    puzzlePieces.forEach((piece, index) => {
+        piece.src = `images/${puzzlePiecesSrc[index]}${this.id}.jpg`;
+    });
+}
+
+// Function to handle drag start event
+function handleStartDrag() {
+    console.log('started dragging this piece:', this);
+
+    // Store a reference to the puzzle piece image that we're dragging
+    // so we can use it later and move it to a drop zone
+    draggedPiece = this;
+}
+
+// Function to handle drag over event
+function handleDragOver(e) {
+    e.preventDefault(); // Prevent default dragover behavior
+    console.log('dragged over me');
+}
+
+// Function to handle drop event
+function handleDrop(e) {
+    e.preventDefault();
+    console.log('dropped something on me');
+
+    // Bug fix #1: Check if there's already a puzzle piece in this drop zone
+    if (this.children.length === 0) {
+        this.appendChild(draggedPiece);
+        draggedPiece.classList.add('dropped'); // Add a class to indicate that the piece has been dropped
+    } else {
+        console.log("Can't drop here - already a piece");
+    }
+}
+
+// Function to reset puzzle pieces
+function resetPuzzlePieces() {
+    // Go through each drop zone and remove any pieces that are there
+    dropZones.forEach(zone => {
+        if (zone.firstChild) {
+            const puzzlePieces = Array.from(zone.children);
+            puzzlePieces.forEach(piece => {
+                document.querySelector('.puzzle-pieces').appendChild(piece);
+            });
+        } else {
+            // Do something else if there are no puzzle pieces in the drop zone
+        }
+    });
+}
+
+// Event handling
+theButtons.forEach(button => button.addEventListener("click", changeBGImage));
+puzzlePieces.forEach(piece => piece.addEventListener("dragstart", handleStartDrag));
+dropZones.forEach(zone => {
+    zone.addEventListener("dragover", handleDragOver);
+    zone.addEventListener("drop", handleDrop);
+});
+
