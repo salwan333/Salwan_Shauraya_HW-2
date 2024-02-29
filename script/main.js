@@ -7,13 +7,13 @@ let theButtons = document.querySelectorAll("#buttonHolder img"),
 
 // Function to change background image and puzzle pieces
 function changeBGImage() {
-    // Bug fix #2: reset the puzzle pieces when changing the background image
+    // Bug fix #2: 
     resetPuzzlePieces();
 
     // Set the background image based on the selected puzzle
     puzzleBoard.style.backgroundImage = `url(images/backGround${this.id}.jpg)`;
 
-    // Load the corresponding puzzle pieces for the selected image
+    
     let puzzlePiecesSrc = [
         "topLeft", "topRight", "bottomLeft", "bottomRight"
     ];
@@ -26,14 +26,13 @@ function changeBGImage() {
 function handleStartDrag() {
     console.log('started dragging this piece:', this);
 
-    // Store a reference to the puzzle piece image that we're dragging
-    // so we can use it later and move it to a drop zone
+    
     draggedPiece = this;
 }
 
 // Function to handle drag over event
 function handleDragOver(e) {
-    e.preventDefault(); // Prevent default dragover behavior
+    e.preventDefault(); 
     console.log('dragged over me');
 }
 
@@ -42,10 +41,10 @@ function handleDrop(e) {
     e.preventDefault();
     console.log('dropped something on me');
 
-    // Bug fix #1: Check if there's already a puzzle piece in this drop zone
+    // Bug fix #1: 
     if (this.children.length === 0) {
         this.appendChild(draggedPiece);
-        draggedPiece.classList.add('dropped'); // Add a class to indicate that the piece has been dropped
+        draggedPiece.classList.add('dropped');
     } else {
         console.log("Can't drop here - already a piece");
     }
@@ -53,7 +52,7 @@ function handleDrop(e) {
 
 // Function to reset puzzle pieces
 function resetPuzzlePieces() {
-    // Go through each drop zone and remove any pieces that are there
+
     dropZones.forEach(zone => {
         if (zone.firstChild) {
             const puzzlePieces = Array.from(zone.children);
@@ -61,7 +60,7 @@ function resetPuzzlePieces() {
                 document.querySelector('.puzzle-pieces').appendChild(piece);
             });
         } else {
-            // Do something else if there are no puzzle pieces in the drop zone
+        
         }
     });
 }
